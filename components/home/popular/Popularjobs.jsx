@@ -16,7 +16,8 @@ const {data,isLoading,error}=useFetch('search',{
   query:'React developer',
   num_pages:1
 })
-
+const [selectedJob, setSelectedJob] = useState();
+const handleCardPress = (item) => {}
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -37,6 +38,7 @@ const {data,isLoading,error}=useFetch('search',{
           renderItem={(item)=>(
             <PopularJobCard
               item={item}
+              selectedJob={selectedJob}
             />
           )}
           keyExtractor={item=> item?.job_id}
