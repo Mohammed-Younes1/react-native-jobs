@@ -20,6 +20,8 @@ import {
 import { COLORS, icons, SIZES } from "../../constants";
 import useFetch from "../../hook/useFetch";
 
+const tabs=["About","Qualifications","Responsibilites"];
+
 const JobDetails = () => {
   const params = useSearchParams();
   const router = useRouter();
@@ -28,9 +30,10 @@ const JobDetails = () => {
     job_id: params.id,
   });
 
-  const[refreshing,setRefreshing]=useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [activeTab,setActiveTab]=useState(tabs[0]);
 
-const onRefresh=()=>{}
+  const onRefresh = () => {};
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
@@ -53,26 +56,34 @@ const onRefresh=()=>{}
         }}
       />
       <>
-      <ScrollView showsVerticalScrollIndicator={false} refreshControl=
-      {<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-        {isLoading ? (
-            <ActivityIndicator size="large" color={COLORS.primary}/>
-        ):error?(
-            
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {isLoading ? (
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          ) : error ? (
             <Text>Something went wrong</Text>
-           
-        ):data.length===0?(
+          ) : data.length === 0 ? (
             <Text>no data</Text>
-        ):(
-            <View style={{padding: SIZES.medium, paddingBottom:100}}>
-                <Company 
-                CompanyLogo={data[0].employed_logo}
+          ) : (
+            <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
+              <Company
+                companyLogo={data[0].employer_logo}
                 jobTitle={data[0].job_title}
-                CompanyName={data[0].employed_name}
-                location={data[0].job_country}/>
+                companyName={data[0].employer_name}
+                location={data[0].job_country}
+              />
+              <JobTabs
+               tabs={tabs}
+               activeTab={activeTab}
+               setActiveTab={setActiveTab}
+              />
             </View>
-        )}
-      </ScrollView>
+          )}
+        </ScrollView>
       </>
     </SafeAreaView>
   );
